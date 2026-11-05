@@ -9,6 +9,8 @@ NOMINEES = ["Nina", "Sam"]
 
 def run_sender():
     fields = [f"AREA: {input('Area Code: ')}"]
+    #for _ in range(int(input("Number of nominees: "))):
+        #name = input(" Nominee name: ")
     for name in NOMINEES:
         votes = int(input(f" Total votes for {name}: "))
         fields.append(f"NOM:{name}: {votes}")
