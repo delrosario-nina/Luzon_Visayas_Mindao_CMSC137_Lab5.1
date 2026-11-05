@@ -2,14 +2,14 @@
 import socket
 from crc_module import encode_data
 
-RECEIVER_IP = "127.0.0.1"     # Replace with IP of the receiver 
+RECEIVER_IP = "127.0.0.1"       # Replace with IP of the receiver 
 PORT = 65432                    # Must match the receiver's port
 KEY = "1001"                    # Must match the receiver 
+NOMINEES = ["Nina", "Sam"]
 
 def run_sender():
     fields = [f"AREA: {input('Area Code: ')}"]
-    for _ in range(int(input("Number of nominees: "))):
-        name = input(" Nominee name: ")
+    for name in NOMINEES:
         votes = int(input(f" Total votes for {name}: "))
         fields.append(f"NOM:{name}: {votes}")
     fields.append(f"ELIG:{int(input('Total eligible voters: '))}")
