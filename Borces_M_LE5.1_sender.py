@@ -1,30 +1,34 @@
-# sender.py
+# Name: Borces, Michaela 
+# CMSC 141 - LE5.1 Sender 
 import socket
 from crc_module import encode_data
 
 RECEIVER_IP = "127.0.0.1"       # Replace with IP of the receiver 
 PORT = 65432                    # Must match the receiver's port
-KEY = "1001"                    # Must match the receiver 
+KEY = "1001"                    # CRC key
 NOMINEES = ["Nina", "Sam"]
 
-def ask_count(prompt):
+def ask_count(prompt, minimum=0):
     while True:
         try:
             value = int(input(prompt))
-            if value >= 0:
+            if value >= minimum:
                 return value
-            print("[Sender] Invalid count. Must be non-negative.")
+            print("[Sender] Invalid count. Must be at least {minimum}.")
         except ValueError:
             print("[Sender] Please enter a whole number.")
 
 def run_sender():
     fields = [f"AREA: {input('Area Code: ')}"]
+    total_votes = 0
     #for _ in range(int(input("Number of nominees: "))):
         #name = input(" Nominee name: ")
     for name in NOMINEES:
         votes = ask_count(f"Total votes for {name}: ")
+        total_votes += votes
         fields.append(f"NOM:{name}: {votes}")
-    fields.append(f"ELIG:{ask_count('Total eligible voters: ')}")
+    eligible = ask_count("Total eligible voters: ", minimum=total_votes)
+    fields.append(f"ELIG:{eligible}")
 
     codewords = [encode_data(f, KEY)[0] for f in fields]      # CRC to EACH field
     message = "|".join(codewords)  
